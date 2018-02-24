@@ -1,0 +1,80 @@
+<template>
+    <div>
+        <div class="content">
+            <div v-for="n in 4" :key=n>
+                <v-expansion-panel class="term">
+                    <v-expansion-panel-content :value="n === 1">
+                        <div slot="header">2015-2016第1学期</div>
+                        <v-divider></v-divider>
+                        <div v-for="n in 4" :key=n>
+                            <div class="course" @click="gotoDetail">
+                                计算机系统
+                                <v-icon medium color="grey lighten-1" class="icon">chevron_right</v-icon>
+                            </div>
+                            <v-divider></v-divider>
+                        </div>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import {mapActions} from 'vuex';
+function setState(store) {
+    store.dispatch('appShell/appHeader/setAppHeader', {
+        show: true,
+        title: '课程',
+        showMenu: true,
+        showBack: false,
+        showLogo: false,
+        actions: [
+            {
+                icon: 'search',
+                route: '/search'
+            }
+        ]
+    });
+    store.dispatch('appShell/appBottomNavigator/showBottomNav');
+}
+
+export default {
+    name: 'course',
+    metaInfo: {
+        title: 'Home',
+        titleTemplate: '%s - Lavas',
+        meta: [
+            {name: 'keywords', content: 'lavas PWA'},
+            {name: 'description', content: '基于 Vue 的 PWA 解决方案，帮助开发者快速搭建 PWA 应用，解决接入 PWA 的各种问题'}
+        ]
+    },
+    methods: {
+        gotoDetail() {
+            this.$router.push({path: '/course-content'})
+        }
+    },
+    async asyncData({store, route}) {
+        setState(store);
+    },
+    activated() {
+        setState(this.$store);
+    }
+};
+</script>
+
+<style lang="stylus" scoped>
+.content
+    display flex
+    flex-direction column
+    width 80%
+    margin 10px auto
+    margin-bottom 60px 
+.term
+    margin-bottom 10px
+.course
+    margin 10px
+    margin-left 25px
+    display flex
+    justify-content space-between
+</style>
